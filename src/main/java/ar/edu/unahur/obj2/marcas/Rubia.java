@@ -1,20 +1,16 @@
 package ar.edu.unahur.obj2.marcas;
 
-import ar.edu.unahur.obj2.pais.Pais;
-
 public class Rubia extends Marca {
+    private final Double gradualidad;
 
-    private final Double graduacionEstaMarca;
-
-    public Rubia(Double gramosLupulo, Pais pais, Double graduacionEstaMarca){
-        super(gramosLupulo, pais);
-        this.graduacionEstaMarca = graduacionEstaMarca;
+    public Rubia(Double lupulo, String pais, Double gradualidad) {
+        super(lupulo, pais);
+        this.gradualidad = gradualidad;
     }
 
     @Override
-    public Double graduacion(){
-        return graduacionEstaMarca;
+    public Double gradualidad() {
+        return gradualidad;
     }
-    
 
 }

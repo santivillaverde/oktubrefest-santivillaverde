@@ -1,16 +1,14 @@
 package ar.edu.unahur.obj2.marcas;
 
-import ar.edu.unahur.obj2.pais.Pais;
-
 public class Negra extends Marca {
 
-    public Negra(Double gramosLupulo, Pais pais ){
-        super(gramosLupulo, pais);
+    public Negra(Double lupulo, String pais) {
+        super(lupulo, pais);
     }
 
     @Override
-    public Double graduacion(){
-        return Double.min(Reglamentacion.getGraduacion(), 2 * gramosLupulo);
+    public Double gradualidad() {
+        return Double.min(getLupulo() * 2,Reglamentaria.getInstance().getReglamentacion());
     }
 
 }

@@ -1,25 +1,23 @@
 package ar.edu.unahur.obj2.marcas;
 
-import ar.edu.unahur.obj2.pais.Pais;
-
 public abstract class Marca {
+    private Double lupulo;
+    private String pais;
 
-        protected Double gramosLupulo;
-        protected Pais pais;
+    public Marca(Double lupulo, String pais) {
+        this.lupulo = lupulo;
+        this.pais = pais;
+    }
 
-        public Marca(Double gramosLupulo, Pais pais){
-            this.gramosLupulo = gramosLupulo;
-            this.pais = pais;
-        }
+    public abstract Double gradualidad();
 
-        public abstract Double graduacion();
+    public Double getLupulo() {
+        return lupulo;
+    }
 
-        public Double getGramosLupulo(){
-            return gramosLupulo;
-        }
+    public String getPais() {
+        return pais;
+    }
 
-        public Pais getPais() {
-            return pais;
-        }
 
 }

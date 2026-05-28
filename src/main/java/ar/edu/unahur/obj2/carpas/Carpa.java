@@ -1,74 +1,75 @@
 package ar.edu.unahur.obj2.carpas;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.unahur.obj2.marcas.JarraLoca;
+import ar.edu.unahur.obj2.marcas.Jarra;
 import ar.edu.unahur.obj2.marcas.Marca;
-import ar.edu.unahur.obj2.persona.Persona;
+import ar.edu.unahur.obj2.personas.Persona;
 
-public class Carpa{
+public class Carpa {
+    private Integer limite;
+    private boolean tieneMusicaTradicional;
+    private Marca marcaAVender;
+    private List<Persona> personasEnCarpa = new ArrayList<>();
 
-    private Integer capacidadMaxima;
-    private Boolean tienenBandaTradicional;
-    private Marca soyMarcaPreferida;
-    private List<Persona> personas;
-
-    public Carpa(Integer capacidadMaxima, Boolean tienenBandaTradicional, Marca soyMarcaPreferida){
-        
+    public Carpa(Integer limite, boolean tieneMusicaTradicional, Marca marcaAVender) {
+        this.limite = limite;
+        this.tieneMusicaTradicional = tieneMusicaTradicional;
+        this.marcaAVender = marcaAVender;
     }
 
-    public Integer getCapacidadMaxima() {
-        return capacidadMaxima;
-    }
-    public Boolean getTienenBandaTradicional() {
-        return tienenBandaTradicional;
-    }
-    public List<Persona> getPersonas() {
-        return personas;
-    }
-    public Marca getSoyMarcaPreferida() {
-        return soyMarcaPreferida;
+    public boolean dejaIngresar(Persona persona) {
+        return cantidadDePersonas() < limite && !persona.estaEbria();
     }
 
-    public Boolean hayLugar(){
-        return personas.size() < capacidadMaxima;
-    }
-
-    public Boolean puedeEntrar(Persona persona){
-        return this.hayLugar() && !persona.estaEbria();
-    }
-
-    public void entrar(Persona persona){
-        if (this.puedeEntrar(persona) && persona.quiereEntrarA(this) ){
-            personas.add(persona);
-        }else {
-           throw new RuntimeException("No ingresa.");
+    public void ingresar(Persona persona) {
+        if (persona.puedeEntrar(this)) {
+            personasEnCarpa.add(persona);
+        }
+        else {
+            throw new RuntimeException("No se puede ingresar a la carpa");
         }
     }
 
-    public void servirJarra(Double litros, Persona persona){
-        if (this.estaEnLaCarpa(persona)){
-            persona.tomarJarra(new JarraLoca(soyMarcaPreferida, litros));
-        }else{
-             throw new RuntimeException("No esta en la carpa.");
+    public void servirJarra(Persona persona, Double litros) {
+        if (personasEnCarpa.contains(persona)) {
+            persona.beber(new Jarra(litros, marcaAVender, this));
+        }
+        else {
+            throw new RuntimeException("La persona no está en la carpa");
         }
     }
 
-    public Boolean estaEnLaCarpa(Persona unaPersona){
-        return personas.contains(unaPersona);
-    }
-    
-    public Integer ebriosEmpedernidos(){
-        return personas.stream().filter(Persona::ebrioEmpedernido).toList().size();
+    public long ebriosEmpedernidos(){
+        return personasEnCarpa.stream().filter(p -> p.esEbrioEmpedernido()).count();
     }
 
-    public Boolean esHomogenia(){
-        if (!personas.isEmpty()){
-            String nacionalidad = personas.get(0).getNacionalidad().nombre();
-            return personas.stream().allMatch(p -> p.getNacionalidad().nombre().equals(nacionalidad));
-        }
-        throw new RuntimeException("No hay personas en la carpa"); 
+    public boolean esHomogenea(){
+        return personasEnCarpa.stream().map(p -> p.getPais()).distinct().count() <= 1;
     }
+
+    public Integer limiteDePersonas() {
+        return limite;
+    }
+
+    public boolean tieneMusicaTradicional() {
+        return tieneMusicaTradicional;
+    }
+
+    public Marca getMarcaAVender() {
+        return marcaAVender;
+    }
+
+    public List<Persona> getPersonasEnCarpa() {
+        return personasEnCarpa;
+    }
+
+    public Integer cantidadDePersonas() {
+        return personasEnCarpa.size();
+    }
+
+
     
-    
+
 }
